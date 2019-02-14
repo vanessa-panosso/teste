@@ -43,10 +43,12 @@ public class GeradorVetor extends HttpServlet {
 	    for (int i = 1; i < 11; i++) {
 	    	 if (i % 3 == 0) {
 	    		 BigDecimal valorTotal = new BigDecimal(i * 0.3 * numero);
-	    		 writer.println("<tr><td>" + valorTotal.setScale(0, BigDecimal.ROUND_HALF_EVEN)  + "</td></tr>");
+	    		 valorTotal = valorTotal.setScale(0, BigDecimal.ROUND_HALF_EVEN);
+	    		 writer.println("<tr><td>" + valorTotal  + "</td></tr>");
 	    		 valores.add(valorTotal);
 	    	 } else {
 	    		 BigDecimal valorTotal = new BigDecimal(i * 0.1 * numero);
+	    		 valorTotal = valorTotal.setScale(0, BigDecimal.ROUND_HALF_EVEN);
 	    		 valores.add(valorTotal);
 
 	    		 writer.println("<tr><td>" + valorTotal + "</td></tr>");
@@ -61,13 +63,18 @@ public class GeradorVetor extends HttpServlet {
 
 	private String somarValores(String somar, Integer numero) {
 		StringBuilder retorno = new StringBuilder();
+		retorno.append("Somado: ");
 		switch (somar) {
 		case "impar":
 			BigDecimal valor = BigDecimal.ZERO;
 			for (int i = 0; i < 10 ; i++) {
 				if (i % 2 == 0 || i == 0) {
 					valor = valor.add(valores.get(i));
-					retorno.append(valores.get(i) + " + " );
+					retorno.append(valores.get(i));
+					
+					if (i != 8) {
+						retorno.append(" + ");
+					}
 				}
 			}
 			retorno.append(" = " + valor);
@@ -77,7 +84,11 @@ public class GeradorVetor extends HttpServlet {
 			for (int i = 0; i < 10 ; i++) {
 				if (i % 2 != 0 && i != 0) {
 					valorPar = valorPar.add(valores.get(i));
-					retorno.append(valores.get(i) + " + " );
+					retorno.append(valores.get(i));
+					if (i != 9) {
+						retorno.append(" + ");
+					}
+					
 				}
 			}
 			retorno.append(" = " + valorPar);
