@@ -1,0 +1,73 @@
+<header ng-switch on="$location.path().indexOf('/VendaProdutos/new') > -1">
+    <h3 ng-switch-when="true">Adicionar Produto</h3>
+    <h3 ng-switch-when="false">View or edit VendaProduto</h3>
+</header>
+<form id="VendaProdutoForm" name="VendaProdutoForm" class="form-horizontal" role="form">
+    
+    <div class="form-group" ng-class="{'has-error': VendaProdutoForm.quantidade.$invalid}">
+        <label for="quantidade" class="col-sm-2 control-label">Quantidade</label>
+        <div id="quantidadeControls" class="col-sm-10">
+            <input id="quantidade" name="quantidade" type="number" required class="form-control" ng-model="vendaProduto.quantidade" placeholder="Enter the VendaProduto Quantidade"></input>
+            <span class="help-block error" ng-show="VendaProdutoForm.quantidade.$error.required">required</span> 
+            <span class="help-block error" ng-show="VendaProdutoForm.quantidade.$error.number">not a number</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': VendaProdutoForm.valorDespesa.$invalid}">
+        <label for="valorDespesa" class="col-sm-2 control-label">Valor Despesa</label>
+        <div id="valorDespesaControls" class="col-sm-10">
+            <input id="valorDespesa" name="valorDespesa" type="text" required class="form-control" ng-model="vendaProduto.valorDespesa" placeholder="Enter the VendaProduto Valor Despesa"></input>
+            <span class="help-block error" ng-show="VendaProdutoForm.valorDespesa.$error.required">required</span> 
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': VendaProdutoForm.valor.$invalid}">
+        <label for="valor" class="col-sm-2 control-label">Valor</label>
+        <div id="valorControls" class="col-sm-10">
+            <input id="valor" name="valor" type="text" required class="form-control" ng-model="vendaProduto.valor" placeholder="Enter the VendaProduto Valor"></input>
+            <span class="help-block error" ng-show="VendaProdutoForm.valor.$error.required">required</span> 
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': VendaProdutoForm.valorCustoProduto.$invalid}">
+        <label for="valorCustoProduto" class="col-sm-2 control-label">Valor Custo Produto</label>
+        <div id="valorCustoProdutoControls" class="col-sm-10">
+            <input id="valorCustoProduto" name="valorCustoProduto" type="text" required class="form-control" ng-model="vendaProduto.valorCustoProduto" placeholder="Enter the VendaProduto Valor Custo Produto"></input>
+            <span class="help-block error" ng-show="VendaProdutoForm.valorCustoProduto.$error.required">required</span> 
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': VendaProdutoForm.margemLucro.$invalid}">
+        <label for="margemLucro" class="col-sm-2 control-label">Margem Lucro</label>
+        <div id="margemLucroControls" class="col-sm-10">
+            <input id="margemLucro" name="margemLucro" type="text" class="form-control" ng-model="vendaProduto.margemLucro" placeholder="Enter the VendaProduto Margem Lucro"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': VendaProdutoForm.produto.$invalid}">
+        <label for="produto" class="col-sm-2 control-label">Produto</label>
+        <div id="produtoControls" class="col-sm-10">
+        <select id="produto" name="produto" class="form-control" ng-model="produtoSelection" ng-options="p.text for p in produtoSelectionList"  >
+            <option value="">Choose a Produto</option>
+        </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': VendaProdutoForm.venda.$invalid}">
+        <label for="venda" class="col-sm-2 control-label">Venda</label>
+        <div id="vendaControls" class="col-sm-10">
+        <select id="venda" name="venda" class="form-control" ng-model="vendaSelection" ng-options="v.text for v in vendaSelectionList"  >
+            <option value="">Choose a Venda</option>
+        </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveVendaProduto" name="saveVendaProduto" class="btn btn-primary" ng-disabled="isClean() || VendaProdutoForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deleteVendaProduto" name="deleteVendaProduto" class="btn btn-danger" ng-show="vendaProduto.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>

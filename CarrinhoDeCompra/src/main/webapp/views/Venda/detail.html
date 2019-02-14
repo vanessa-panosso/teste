@@ -1,0 +1,117 @@
+<header ng-switch on="$location.path().indexOf('/Vendas/new') > -1">
+    <h3 ng-switch-when="true">Cadastrar Venda</h3>
+    <h3 ng-switch-when="false">Visualizar Venda</h3>
+</header>
+<form id="VendaForm" name="VendaForm" class="form-horizontal" role="form">
+
+	<div class="form-group" ng-class="{'has-error': VendaForm.valorDespesasTotais.$invalid}">
+        <label for="valor_venda" class="col-sm-2 control-label">Valor Despesas</label>
+        <div id="valor_vendaControls" class="col-sm-10">
+            <input id="valor_venda" name="valor_venda" required type="number" class="form-control" ng-model="venda.valorDespesasTotais"></input>
+        </div>
+    </div>
+	
+	<div class="form-group" ng-class="{'has-error': VendaForm.valorVenda.$invalid}">
+        <label for="valorVenda" class="col-sm-2 control-label">Valor Total</label>
+        <div id="valorVendaControls" class="col-sm-10">
+            <input id="valorVenda" name="valorVenda" disabled type="number" class="form-control" ng-model="venda.valorVenda"></input>
+        </div>
+    </div>
+	<div>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-sm-2">
+				<a id="calcular" name="calcular" class="btn btn-info" ng-disabled="!venda.valorDespesasTotais" ng-click="calcularValores()"><span class="glyphicon glyphicon-refresh"></span> Calcular</a>
+			</div>
+			<div class="col-md-offset-2 col-sm-2">
+				<a id="Create" name="Create" class="btn btn-primary" ng-click="adicionarProduto()"><span class="glyphicon glyphicon-plus-sign"></span> Novo Produto</a>
+			</div>
+		</div>
+
+	</div>
+	
+	<div ng-if="adicionandoProduto">
+    
+		<div class="form-group">
+			<label for="produto" class="col-sm-2 control-label">Produto</label>
+			<div id="produtoControls" class="col-sm-10">
+			<select id="produto" name="produto" class="form-control" ng-model="produtoSelecionado" ng-options="p.text for p in produtoSelectionList" ng-change="selecionadoProduto(produtoSelecionado)" >
+				<option value="">Selecionar Produto</option>
+			</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="quantidade" class="col-sm-2 control-label">Quantidade</label>
+			<div id="quantidadeControls" class="col-sm-10">
+				<input id="quantidade" name="quantidade" type="number" required class="form-control" ng-model="vendaProduto.quantidade"></input>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="valorCustoProduto" class="col-sm-2 control-label">Valor Custo Produto</label>
+			<div id="valorCustoProdutoControls" class="col-sm-10">
+				<input id="valorCustoProduto" name="valorCustoProduto" type="text" required class="form-control" ng-value="vendaProduto.valorCustoProduto" ng-model="vendaProduto.valorCustoProduto"></input>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="margemLucro" class="col-sm-2 control-label">Margem Lucro</label>
+			<div id="margemLucroControls" class="col-sm-10">
+				<input id="margemLucro" name="margemLucro" type="text" class="form-control" ng-model="vendaProduto.margemLucro"></input>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button id="saveVendaProduto" name="saveVendaProduto" class="btn btn-primary" ng-disabled="isClean() || VendaProdutoForm.$invalid" ng-click="saveProduto()"><span class="glyphicon glyphicon-ok-sign"></span> Adicionar</button>
+				<button id="cancel" name="cancel" class="btn btn-default" ng-click="cancelarProduto()"><span class="glyphicon glyphicon-remove-sign"></span> Cancelar</button>
+			</div>
+		</div>
+	</div>
+	
+	<div>
+        <div class="table-responsive">
+        <table class="table table-responsive table-bordered table-striped clearfix">
+            <thead>
+                <tr>
+				    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Valor Despesa</th>
+                    <th>Valor Custo Produto</th>
+                    <th>Margem Lucro</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="result in venda.produtos | startFrom:currentPage*pageSize | limitTo:pageSize">
+				    <td><a href="#/VendaProdutos/edit/{{result.id}}">{{result.produto.nome}}</a></td>
+                    <td><a href="#/VendaProdutos/edit/{{result.id}}">{{result.quantidade}}</a></td>
+                    <td><a href="#/VendaProdutos/edit/{{result.id}}">{{result.valorDespesa}}</a></td>
+                    <td><a href="#/VendaProdutos/edit/{{result.id}}">{{result.valorCustoProduto}}</a></td>
+                    <td><a href="#/VendaProdutos/edit/{{result.id}}">{{result.margemLucro}}</a></td>
+					<td><a href="#/VendaProdutos/edit/{{result.id}}">{{result.valor}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+        <ul class="pagination pagination-centered">
+        <li ng-class="{disabled:currentPage == 0}">
+            <a id="prev" href ng-click="previous()">«</a>
+        </li>
+        <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+            <a href ng-bind="n + 1">1</a>
+        </li>
+        <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+            <a id="next" href ng-click="next()">»</a>
+        </li>
+    </ul>
+
+</div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveVenda" name="saveVenda" class="btn btn-primary" ng-disabled="isClean() || VendaForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Salvar</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancelar</button>
+            <button id="deleteVenda" name="deleteVenda" class="btn btn-danger" ng-show="venda.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Excluir</button>
+        </div>
+    </div>
+</form>
