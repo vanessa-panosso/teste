@@ -66,12 +66,13 @@ angular.module('carrinhoDeCompra').controller('NewVendaController', function ($s
 			var totalItens = $scope.venda.produtos.length;
 			var despesaProduto = $scope.venda.valorDespesasTotais / totalItens;
 			var total = 0;
-			total = parseFloat(total) + parseFloat($scope.venda.produtos.map(function(valor){
+			$scope.venda.produtos.map(function(valor){
 				valor.valorDespesa = despesaProduto;
-				var margemLucro = valor.marquemLucro != null? (valor.valorCustoProduto * (valor.margemLucro / 100)) : 10;
-				valor.valor = (valor.valorCustoProduto * valor.quantidade) + valor.valorDespesa + margemLucro;
-				return valor.valor;
-			}));
+				var valorSomado = (valor.valorCustoProduto * valor.quantidade) + valor.valorDespesa;
+				var margemLucro = valor.margemLucro != null? (valorSomado * (valor.margemLucro / 100)) : 0;
+				valor.valor =  valorSomado + margemLucro;
+				total += parseFloat(valor.valor);
+			});
 			$scope.venda.valorVenda = total;
 		}
 	}

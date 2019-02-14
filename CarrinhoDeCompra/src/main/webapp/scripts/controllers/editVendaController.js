@@ -114,11 +114,11 @@ angular.module('carrinhoDeCompra').controller('EditVendaController', function($s
 			var totalItens = $scope.venda.produtos.length;
 			var despesaProduto = $scope.venda.valorDespesasTotais / totalItens;
 			var total = 0;
-			total += $scope.venda.produtos.map(function(valor){
+			$scope.venda.produtos.map(function(valor){
 				valor.valorDespesa = despesaProduto;
 				var margemLucro = valor.marquemLucro != null? (valor.valorCustoProduto * (valor.margemLucro / 100)) : 0;
 				valor.valor = (valor.valorCustoProduto * valor.quantidade) + valor.valorDespesa + margemLucro;
-				return valor.valor;
+				total += parseFloat(valor.valor);
 			});
 			$scope.venda.valorVenda = total;
 		}
